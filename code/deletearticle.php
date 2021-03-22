@@ -1,7 +1,13 @@
 <?php
 session_start();
+
 include("config.php");
 include("lib/db.php");
+// Access Control / RBAC + CSRF protection
+
+
+
+
 
 $aid = $_GET['aid'];
 #echo "aid=".$aid."<br>";

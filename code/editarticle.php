@@ -3,11 +3,13 @@
 <?php
 
 if($_SERVER['REQUEST_METHOD'] == 'GET') {
-	$aid = $_GET['aid'];	
+	$aid = $_GET['aid'];
 	$result=get_article($dbconn, $aid);
 	$row = pg_fetch_array($result, 0);
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	$title = $_POST['title'];
+	// Sanitized Title -- XSS prevention
+	$title_var = $_POST['title'];
+	$title = htmlentities($title_var, ENT_QUOTES, 'UTF-8');
 	$content = $_POST['content'];
 	$aid = $_POST['aid'];
 	$result=update_article($dbconn, $title, $content, $aid);
@@ -31,7 +33,8 @@ if($_SERVER['REQUEST_METHOD'] == 'GET') {
 	<input type="hidden" value="<?php echo $row['aid'] ?>" name="aid">
 	<div class="form-group">
 	<label for="inputTitle" class="sr-only">Post Title</label>
-	<input type="text" id="inputTitle" required autofocus name='title' value="<?php echo $row['title'] ?>">
+	<!------------------- XSS prevention measures on title ---------------------->
+	<input type="text" id="inputTitle" required autofocus name='title' value="<?php echo htmlentities($row['title'], ENT_QUOTES, 'UTF-8') ?>">
 	</div>
 	<div class="form-group">
 	<label for="inputContent" class="sr-only">Post Content</label>

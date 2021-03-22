@@ -2,9 +2,13 @@
 <?php
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	$result = authenticate_user($dbconn, $_POST['username'], $_POST['password']);
+  // ------- Sanitizing username and password --- SQLi prevention measures
+  $username_var = htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8');
+  $password_var = htmlspecialchars($_POST['password'], ENT_QUOTES, 'UTF-8');
+	$result = authenticate_user($dbconn, $username_var, $password_var);
 	if (pg_num_rows($result) == 1) {
-		$_SESSION['username'] = $_POST['username'];
+    // ---------- Sanitizing session username --- SQLi prevention measures
+		$_SESSION['username'] = htmlspecialchars($_POST['username'], ENT_QUOTES, 'UTF-8');
 		$_SESSION['authenticated'] = True;
 		$_SESSION['id'] = pg_fetch_array($result)['id'];
 		//Redirect to admin area

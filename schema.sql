@@ -1,5 +1,8 @@
 CREATE TYPE author_role AS ENUM ('admin', 'user');
 
+-- Adding pgcrypto extension --Securing passwords
+CREATE EXTENSION pgcrypto;
+
 CREATE TABLE authors (
 	id SERIAL,
 	created_on TIMESTAMPTZ DEFAULT NOW(),
@@ -20,3 +23,6 @@ CREATE TABLE articles (
 	PRIMARY KEY (id),
 	FOREIGN KEY (author) REFERENCES authors (id) 
 );
+
+
+

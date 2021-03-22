@@ -22,10 +22,10 @@ function run_query($dbconn, $query) {
 	return $result;
 }
 
-//Database functions
+//database functions
 function get_article_list($dbconn){
-	$query=
-		"SELECT
+	$query=	"
+SELECT
 		articles.created_on as date,
 		articles.aid as aid,
 		articles.title as title,
@@ -38,50 +38,6 @@ function get_article_list($dbconn){
 		ORDER BY
 		date DESC";
 	return run_query($dbconn, $query);
-}
-
-// ------- Adding function to fetch user role -------
-function get_role ($dbconn, $username) {
-	$query = "SELECT role FROM authors where role='student'";
-	return run_query($dbconn, $query);
-}
-
-// ------- Adding function to fetch posts specific to student, All for admin -------
-function get_article_list_rbac ($dbconn, $username) {
-	$role = run_query($dbconn, $username);
-	if ($role == 'student') {
-		$student_query=
-			"SELECT
-			articles.created_on as date,
-			articles.aid as aid,
-			articles.title as title,
-			authors.username as author,
-			articles.stub as stub
-			FROM
-			articles
-			INNER JOIN
-			authors ON articles.author=authors.id
-			WHERE
-			authors.role='student'
-			ORDER BY
-			date DESC";
-		return run_query($dbconn, $student_query);
-	} 
-	else {
-		$admin_query= 
-			"SELECT
-			articles.created_on as date,
-			articles.aid as aid,
-			articles.title as title,
-			authors.username as author,
-			articles.stub as stub
-			FROM
-			articles
-			INNER JOIN
-			authors ON articles.author=authors.id
-			ORDER BY
-			date DESC";
-		return run_query($dbconn, $admin_query);
 }
 
 function get_article($dbconn, $aid) {
@@ -147,4 +103,4 @@ function authenticate_user($dbconn, $username, $password) {
 		LIMIT 1";
 	return run_query($dbconn, $query);
 }
-}?>
+?>

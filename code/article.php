@@ -13,6 +13,7 @@
 <!doctype html>
 <html lang="en">
 <head>
+<!------------------- XSS prevention measures on title ---------------------->
 <title><?php echo $row['title'] ?></title>
 	<?php include("templates/header.php"); ?>
 
@@ -28,7 +29,8 @@
       	</h3>
 
 	<div class="blog-post">
-	<h2 class="blog-post-title"><?php echo $row['title'] ?></h2>
+	<!------------------- XSS prevention measures on title ---------------------->
+	<h2 class="blog-post-title"><?php echo htmlentities($row['title'],ENT_QUOTES, 'UTF-8') ?></h2>
 	<p class="blog-post-meta">
 		<?php echo substr($row['date'], 0, 10)." by ".$row['author'] ?>
 	</p><p>
